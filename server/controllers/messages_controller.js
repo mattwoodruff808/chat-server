@@ -1,5 +1,5 @@
 const messages = [];
-const id = 0;
+let id = 0;
 
 module.exports = {
     addMessage: (req, res) => {
@@ -21,20 +21,23 @@ module.exports = {
         const {id} = req.params;
         const {text} = req.body;
 
-        let editMessage = messages.find(el => el.id === +id);
+        let editMessageIndex = messages.findIndex(el => el.id === +id);
 
-        editMessage = {
-            id: editMessage.id,
-            text: text || editMessage.text,
-            time: editMessage.time
+        messages[editMessageIndex] = {
+            id: messages[editMessageIndex].id,
+            text: text || messages[editMessageIndex].text,
+            time: messages[editMessageIndex].time
         };
         res.status(200).send(messages);
     },
     deleteMessage: (req, res) => {
         const {id} = req.params;
 
-        let deleteMessage = messages.find(el => el.id === +id);
-        messages.splice(deleteMessage, 1);
+        let deleteMessageIndex = messages.findIndex(el => el.id === +id);
+        messages.splice(deleteMessageIndex, 1);
         res.status(200).send(messages);
+
+        // messages.splice(messages.findIndex(el => el.id === +id), 1);
+        // res.status(200).send(messages);
     }
 };
